@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily submissions &middot; Day 1 to Day 16</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #10151c;
+    --panel:     #171e27;
+    --raise:     #1e2730;
+    --edge:      #2b3742;
+    --edge-lit:  #3d4c5a;
+    --text:      #e4eaf0;
+    --dim:       #7d8f9f;
+    --faint:     #4d5c6a;
+    --go:        #4ec98a;
+    --go-deep:   #1d6b45;
+    --warn:      #f0b45e;
+    --stop:      #f2705f;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(900px 500px at 12% -8%, rgba(78,201,138,0.07), transparent 60%),
+      radial-gradient(700px 400px at 100% 0%, rgba(61,76,90,0.18), transparent 55%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    padding: 40px 20px 80px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  /* ---- masthead ---- */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--go);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: clamp(26px, 5vw, 36px);
+    letter-spacing: -0.03em;
+    margin: 0 0 8px;
+  }
+  h1 .slash { color: var(--faint); font-weight: 400; }
+  .meta {
+    color: var(--dim);
+    font-size: 13.5px;
+    margin: 0 0 26px;
+    max-width: 56ch;
+  }
+  .meta b { color: var(--text); font-weight: 600; }
+
+  /* ---- signature: the day rail ---- */
+  .rail {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .rail-slot {
+    flex: 1;
+    height: 30px;
+    border-radius: 3px;
+    background: var(--raise);
+    border: 1px solid var(--edge);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--faint);
+    cursor: pointer;
+    transition: background .16s, border-color .16s, color .16s, transform .16s;
+    padding: 0;
+    appearance: none;
+  }
+  .rail-slot:hover {
+    border-color: var(--edge-lit);
+    color: var(--dim);
+    transform: translateY(-2px);
+  }
+  .rail-slot.filled {
+    background: var(--go-deep);
+    border-color: var(--go);
+    color: #d6ffe9;
+    font-weight: 700;
+  }
+  .rail-slot:focus-visible { outline: 2px solid var(--go); outline-offset: 2px; }
+  .rail-legend {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+    margin-bottom: 30px;
+  }
+  .rail-legend b { color: var(--go); font-weight: 500; }
+
+  /* ---- panels ---- */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 8px;
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  .panel-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin: 0 0 16px;
+  }
+
+  label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--dim);
+    margin: 0 0 6px;
+  }
+  .req { color: var(--go); }
+  input, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg);
+    border: 1px solid var(--edge);
+    border-radius: 5px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  input::placeholder, textarea::placeholder { color: var(--faint); }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--go);
+    box-shadow: 0 0 0 3px rgba(78,201,138,0.13);
+  }
+  #name { font-family: var(--sans); font-size: 14.5px; }
+  textarea { resize: vertical; min-height: 58px; font-family: var(--sans); font-size: 14px; }
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+  .hint { font-size: 11.5px; color: var(--faint); margin-top: 5px; }
+  .error {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--stop);
+    margin-top: 5px;
+    display: none;
+  }
+  .field.invalid input, .field.invalid textarea { border-color: var(--stop); }
+  .field.invalid .error { display: block; }
+
+  /* ---- combobox ---- */
+  .combo { position: relative; }
+  .combo-list {
+    position: absolute; z-index: 30; top: calc(100% + 5px); left: 0; right: 0;
+    max-height: 300px; overflow-y: auto;
+    background: var(--raise);
+    border: 1px solid var(--edge-lit);
+    border-radius: 6px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.5);
+    display: none; padding: 5px;
+  }
+  .combo-list.open { display: block; }
+  .combo-opt {
+    padding: 9px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+  }
+  .combo-opt:hover, .combo-opt.active { background: rgba(78,201,138,0.09); border-left-color: var(--go); }
+  .combo-opt.taken { opacity: .35; cursor: not-allowed; }
+  .combo-opt.taken:hover { background: transparent; border-left-color: transparent; }
+  .opt-day {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--go);
+    letter-spacing: 0.06em;
+  }
+  .combo-opt.taken .opt-day { color: var(--dim); }
+  .opt-topic { font-size: 14px; font-weight: 500; }
+  .opt-submit { font-size: 11.5px; color: var(--faint); margin-top: 1px; }
+  .combo-opt mark { background: rgba(240,180,94,0.28); color: var(--warn); border-radius: 2px; }
+  .combo-empty { padding: 14px 10px; font-size: 13px; color: var(--dim); }
+  .combo-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+    margin-top: 6px;
+  }
+
+  /* ---- entry cards ---- */
+  .entry {
+    background: var(--raise);
+    border: 1px solid var(--edge);
+    border-left: 3px solid var(--go);
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .entry-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .entry-day {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--go);
+    letter-spacing: 0.08em;
+  }
+  .entry-topic { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .remove {
+    background: transparent;
+    border: 1px solid var(--edge);
+    color: var(--faint);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 9px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .remove:hover { border-color: var(--stop); color: var(--stop); }
+  .brief {
+    background: var(--bg);
+    border-radius: 5px;
+    padding: 11px 13px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+  .brief-submit {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--warn);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--edge);
+    letter-spacing: 0.04em;
+  }
+  .empty-state {
+    border: 1px dashed var(--edge);
+    border-radius: 6px;
+    padding: 26px 18px;
+    text-align: center;
+    color: var(--faint);
+    font-size: 13.5px;
+  }
+  .empty-state code {
+    font-family: var(--mono);
+    color: var(--dim);
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+
+  .panel.locked { opacity: .45; pointer-events: none; user-select: none; }
+  .lock-note {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--bg);
+    border: 1px dashed var(--edge);
+    border-radius: 6px;
+    padding: 13px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 16px;
+  }
+  .lock-note.hide { display: none; }
+  .lock-note .key { color: var(--warn); }
+  .rail.locked { opacity: .35; pointer-events: none; }
+
+  .loading-note {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--dim);
+    margin-top: 6px;
+    display: none;
+  }
+  .loading-note.show { display: block; }
+  .loading-note .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--warn);
+    margin-right: 6px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+
+  .tag-saved {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--warn);
+    border: 1px solid rgba(240,180,94,0.35);
+    background: rgba(240,180,94,0.08);
+    border-radius: 3px;
+    padding: 2px 6px;
+    margin-left: 8px;
+    vertical-align: 2px;
+  }
+  .entry.saved { border-left-color: var(--warn); }
+  .rail-slot.saved {
+    background: rgba(240,180,94,0.14);
+    border-color: var(--warn);
+    color: var(--warn);
+    font-weight: 700;
+  }
+
+  /* ---- submit ---- */
+  .btn {
+    width: 100%;
+    background: var(--go);
+    color: #06180f;
+    border: 0;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    padding: 14px;
+    cursor: pointer;
+    transition: background .16s, transform .1s;
+  }
+  .btn:hover:not(:disabled) { background: #63e29e; }
+  .btn:active:not(:disabled) { transform: translateY(1px); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .btn:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+
+  .status {
+    margin-top: 14px;
+    padding: 11px 13px;
+    border-radius: 5px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.ok  { background: rgba(78,201,138,0.1); color: var(--go); border: 1px solid var(--go-deep); }
+  .status.bad { background: rgba(242,112,95,0.09); color: var(--stop); border: 1px solid rgba(242,112,95,0.3); }
+
+  .note {
+    margin-top: 22px;
+    font-size: 12.5px;
+    color: var(--faint);
+    border-left: 2px solid var(--edge);
+    padding-left: 12px;
+    line-height: 1.65;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Amrapali University &middot; Full-Stack &amp; QA</p>
+  <h1>Daily submissions <span class="slash">/</span> 16</h1>
+  <p class="meta">Instructor: <b>Dinesh Rawat</b>. Add every day you have finished, paste the links, send it once. Each day lands as its own row, so nothing you submit can wipe out anyone else's work.</p>
+
+  <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 16"></div>
+  <div class="rail-legend">
+    <span id="railStatus">0 of 16 added</span>
+    <span id="railHint">enter your email first</span>
+  </div>
+
+  <div class="panel">
+    <p class="panel-label">Who you are</p>
+    <div class="row">
+      <div class="field" id="f-name">
+        <label for="name">Full name <span class="req">*</span></label>
+        <input id="name" type="text" autocomplete="name" placeholder="As it appears on the sheet">
+        <div class="error">Enter your name.</div>
+      </div>
+      <div class="field" id="f-email">
+        <label for="email">Email <span class="req">*</span></label>
+        <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+        <div class="error">That email does not look right.</div>
+        <div class="loading-note" id="loadNote"><span class="dot"></span>looking up your submissions...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel locked" id="daysPanel" aria-disabled="true">
+    <p class="panel-label">Your days</p>
+    <div class="lock-note" id="lockNote">
+      <span class="key">&#9679;</span>
+      <span>Enter your email above to load your submissions and unlock this section.</span>
+    </div>
+    <div id="entries"></div>
+    <div class="empty-state" id="emptyState">
+      Nothing added yet. Search below, or tap a slot in the rail.<br>
+      Try <code>flex</code>, <code>express</code>, or <code>14</code>.
+    </div>
+
+    <div class="field" id="f-task" style="margin-top:14px">
+      <div class="combo">
+        <input id="taskSearch" type="text" autocomplete="off"
+               role="combobox" aria-expanded="false" aria-controls="taskList"
+               placeholder="Search a day or topic">
+        <div class="combo-list" id="taskList" role="listbox"></div>
+      </div>
+      <div class="combo-count" id="taskCount"></div>
+      <div class="error" id="taskError">Pick a day from the list.</div>
+    </div>
+  </div>
+
+  <button class="btn" id="submitBtn" type="button">Send to the sheet</button>
+  <div class="status" id="status"></div>
+
+  <p class="note">Sending a day twice is fine. The newer row wins at review, so if you fix something, just send it again.</p>
+</div>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFONCHBGfntsfay72fd0EpvCVpKM37y6EXamVzHs0qNbMrwkILFTvsOc-xCjDToAgW/exec';
+
+  const DAYS = [
+    {
+      "day": "DAY 1",
+      "topic": "How a Website Works",
+      "task": "Come prepared with questions. Get active on LinkedIn: follow mentors and track the market. Update your email to a professional format.",
+      "submit": "LinkedIn profile"
+    },
+    {
+      "day": "DAY 2",
+      "topic": "Debugging & DevTools",
+      "task": "Open shorterloop.com in Chrome DevTools (Network tab) and observe the requests. Run nslookup and dig from the terminal. Screenshot both. Document 4-5 requests in a README (type, status code, one header each) plus the nslookup output. Push to a public repo.",
+      "submit": "Repo (network analysis)"
+    },
+    {
+      "day": "DAY 3",
+      "topic": "HTML5 Tags",
+      "task": "Build your resume in HTML: name + photo, about, education, skills, projects, hobbies, contact, footer. Semantic tags only, no div or span. Include LinkedIn and GitHub links. Repo named 'resume'. No AI.",
+      "submit": "Repo ('resume')"
+    },
+    {
+      "day": "DAY 4",
+      "topic": "Resume Build & CSS Recap",
+      "task": "Style your resume with everything covered. Add learnings/css.md written in your own words. Build three practice projects: a profile card, a navigation bar, and a button collection with hover states. Keep it in one organised repo. Submit using terminal Git.",
+      "submit": "Repo, or CodePen for the 3 projects"
+    },
+    {
+      "day": "DAY 5",
+      "topic": "CSS Boilerplate & Selectors",
+      "task": "Live build and revamp. Rework the test resume built in class, then apply the same thinking to improve your own. Correct semantic tags throughout, no div or span, clear structure, working LinkedIn and GitHub links. Put the revamp in a new folder in the same repo.",
+      "submit": "Repo ('resume' / revamp)"
+    },
+    {
+      "day": "DAY 6",
+      "topic": "Box Model, Flexbox & Grid",
+      "task": "Practise the box model, Flexbox and Grid from the session on real layouts.",
+      "submit": "Repo or CodePen"
+    },
+    {
+      "day": "DAY 7",
+      "topic": "Flexbox vs Grid",
+      "task": "Practise choosing between Flexbox and Grid, and be able to justify the choice.",
+      "submit": "Repo or CodePen"
+    },
+    {
+      "day": "DAY 8",
+      "topic": "Styling the Resume with CSS",
+      "task": "Continue styling your resume with everything covered in the session.",
+      "submit": "Repo"
+    },
+    {
+      "day": "DAY 9",
+      "topic": "Objects & Array Methods",
+      "task": "Put the session notes into GitHub in your own words. Practise the array methods: forEach, map, filter, find, some, every, sort, reduce. Complete the practice questions.",
+      "submit": "Repo (notes + practice)"
+    },
+    {
+      "day": "DAY 10",
+      "topic": "Functions in JavaScript",
+      "task": "Add the session notes to GitHub, written in your own words.",
+      "submit": "Repo (notes)"
+    },
+    {
+      "day": "DAY 11",
+      "topic": "HTTP Standards & REST APIs",
+      "task": "Add the session notes to your GitHub repo, written in your own words.",
+      "submit": "Repo (notes)"
+    },
+    {
+      "day": "DAY 12",
+      "topic": "Endpoints + JS & Browser Storage",
+      "task": "Identify the resources and map the API endpoints and methods for the AI Resume Builder. Write the session notes in your own words on GitHub. Build login and register pages and wire them into the ResumeFlow project, with entry buttons on the main page. Store the selected theme in Local Storage, save temporary form data in Session Storage, inspect website Cookies in DevTools, and create a simple IndexedDB database to store resumes or notes.",
+      "submit": "Repo (notes + ResumeFlow + storage demo)"
+    },
+    {
+      "day": "DAY 13",
+      "topic": "Full Web Flow & Express",
+      "task": "Build every API route for the AI Resume Builder, all resources from Auth through Applications. Full specification is in the notes PDF.",
+      "submit": "Repo ('resume-api')"
+    },
+    {
+      "day": "DAY 14",
+      "topic": "Backend Practical",
+      "task": "Complete any pending API work, install Postman, and finish all outstanding tasks.",
+      "submit": "Repo ('resume-api') + Postman"
+    },
+    {
+      "day": "DAY 15",
+      "topic": "Express, Middleware, npm",
+      "task": "Make the folders: routes, controllers, models, middleware. Get the hello route working and tested in Postman. Install PowerShell and use it instead of Command Prompt. Be able to explain what your package.json says. Read the notes PDF while it is fresh.",
+      "submit": "Repo + Postman collection"
+    },
+    {
+      "day": "DAY 16",
+      "topic": "Live Coding Session",
+      "task": "I wrote the code live, ran it, and showed the whole thing working end to end, the source and the data behind it. Complete the same yourself. The reference zip of the session code is shared. Watching is not building: type it out, run it, break it, fix it.",
+      "submit": "Repo (your own build)"
+    }
+  ];
+
+  const byId = (id) => document.getElementById(id);
+  const statusEl = byId('status');
+  const btn = byId('submitBtn');
+  const entriesEl = byId('entries');
+  const emptyEl = byId('emptyState');
+  const railEl = byId('rail');
+  const railStatus = byId('railStatus');
+  const searchEl = byId('taskSearch');
+  const listEl = byId('taskList');
+  const countEl = byId('taskCount');
+
+  const TASKS = DAYS.map(d => d.day + ' - ' + d.topic);
+  const DAY_BY_LABEL = {};
+  DAYS.forEach(d => { DAY_BY_LABEL[d.day + ' - ' + d.topic] = d; });
+
+  let entries = [];
+  let nextId = 1;
+  let filtered = [];
+  let activeIdx = -1;
+
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const isUrl = (v) => { try { new URL(v); return true; } catch { return false; } };
+  const setInvalid = (id, bad) => byId(id).classList.toggle('invalid', bad);
+  const show = (kind, msg) => { statusEl.className = 'status show ' + kind; statusEl.textContent = msg; };
+  const num = (label) => (DAY_BY_LABEL[label] || {}).day.replace(/\D/g, '');
+
+  /* ---------- email gate ---------- */
+
+  let unlocked = false;
+
+  function setUnlocked(on) {
+    unlocked = on;
+    byId('daysPanel').classList.toggle('locked', !on);
+    byId('daysPanel').setAttribute('aria-disabled', String(!on));
+    byId('lockNote').classList.toggle('hide', on);
+    railEl.classList.toggle('locked', !on);
+    byId('railHint').textContent = on ? 'tap a day to add it' : 'enter your email first';
+    btn.disabled = !on;
+    btn.textContent = on ? 'Send to the sheet' : 'Enter your email to start';
+  }
+
+  /* ---------- the rail ---------- */
+
+  function renderRail() {
+    const state = {};
+    entries.forEach(e => { state[num(e.task)] = e.saved ? 'saved' : 'filled'; });
+    railEl.innerHTML = DAYS.map(d => {
+      const n = d.day.replace(/\D/g, '');
+      const st = state[n];
+      const word = st === 'saved' ? ', already submitted' : st ? ', added' : '';
+      return '<button type="button" class="rail-slot' + (st ? ' ' + st : '') + '" data-day="' + n + '" ' +
+             'title="' + esc(d.day + ': ' + d.topic) + '" ' +
+             'aria-label="' + esc(d.day + ', ' + d.topic + word) + '">' + n + '</button>';
+    }).join('');
+    const done = Object.keys(state).length;
+    railStatus.innerHTML = done ? '<b>' + done + '</b> of 16 added' : '0 of 16 added';
+  }
+
+  railEl.addEventListener('click', (e) => {
+    const slot = e.target.closest('.rail-slot');
+    if (!slot) return;
+    const label = TASKS.find(t => num(t) === slot.dataset.day);
+    if (!label) return;
+    if (entries.some(x => x.task === label)) {
+      const node = entriesEl.querySelector('.entry[data-task="' + CSS.escape(label) + '"]');
+      if (node) node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    addEntry(label);
+  });
+
+  /* ---------- entries ---------- */
+
+  function renderEntries() {
+    emptyEl.style.display = entries.length ? 'none' : 'block';
+    entriesEl.innerHTML = entries.map(en => {
+      const d = DAY_BY_LABEL[en.task] || {};
+      return '' +
+      '<div class="entry' + (en.saved ? ' saved' : '') + '" data-id="' + en.id + '" data-task="' + esc(en.task) + '">' +
+        '<div class="entry-head">' +
+          '<div>' +
+            '<div class="entry-day">' + esc(d.day || '') + '</div>' +
+            '<div class="entry-topic">' + esc(d.topic || '') +
+              (en.saved ? '<span class="tag-saved">submitted</span>' : '') + '</div>' +
+          '</div>' +
+          '<button class="remove" type="button" data-remove="' + en.id + '">' + (en.saved ? 'discard' : 'remove') + '</button>' +
+        '</div>' +
+        '<div class="brief">' + esc(d.task || '') +
+          '<div class="brief-submit">expects: ' + esc(d.submit || '') + '</div>' +
+        '</div>' +
+        '<div class="field" data-f="repo">' +
+          '<label>GitHub repo link <span class="req">*</span></label>' +
+          '<input type="url" data-k="repoLink" value="' + esc(en.repoLink) + '" placeholder="https://github.com/you/repo">' +
+          '<div class="error">Needs a full URL starting with https://github.com/</div>' +
+        '</div>' +
+        '<div class="field" data-f="live">' +
+          '<label>Live link</label>' +
+          '<input type="url" data-k="liveLink" value="' + esc(en.liveLink) + '" placeholder="https://you.github.io/repo">' +
+          '<div class="error">That is not a valid URL.</div>' +
+          '<div class="hint">Leave blank if this day has nothing to deploy.</div>' +
+        '</div>' +
+        '<div class="field">' +
+          '<label>Notes</label>' +
+          '<textarea data-k="notes" placeholder="Anything unfinished or worth flagging?">' + esc(en.notes) + '</textarea>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    renderRail();
+  }
+
+  entriesEl.addEventListener('input', (e) => {
+    const key = e.target.dataset.k;
+    if (!key) return;
+    const en = entries.find(x => x.id === Number(e.target.closest('.entry').dataset.id));
+    if (en) en[key] = e.target.value;
+    e.target.closest('.field').classList.remove('invalid');
+  });
+
+  entriesEl.addEventListener('click', (e) => {
+    const rid = e.target.dataset.remove;
+    if (!rid) return;
+    entries = entries.filter(x => x.id !== Number(rid));
+    renderEntries();
+    renderList(searchEl.value);
+  });
+
+  function addEntry(task) {
+    if (entries.some(e => e.task === task)) return;
+    entries.push({ id: nextId++, task, repoLink: '', liveLink: '', notes: '', saved: false });
+    entries.sort((a, b) => Number(num(a.task)) - Number(num(b.task)));
+    renderEntries();
+    const node = entriesEl.querySelector('.entry[data-task="' + CSS.escape(task) + '"]');
+    if (node) {
+      const inp = node.querySelector('input[data-k="repoLink"]');
+      if (inp) inp.focus({ preventScroll: true });
+      node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    setInvalid('f-task', false);
+  }
+
+  /* ---------- search ---------- */
+
+  function highlight(text, q) {
+    if (!q) return esc(text);
+    const i = text.toLowerCase().indexOf(q.toLowerCase());
+    if (i < 0) return esc(text);
+    return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+  }
+
+  function filterTasks(q) {
+    const s = q.trim().toLowerCase();
+    if (!s) return TASKS.slice();
+    const hits = [];
+    for (const t of TASKS) {
+      const d = DAY_BY_LABEL[t];
+      const hay = (d.day + ' ' + d.topic + ' ' + d.task + ' ' + d.submit).toLowerCase();
+      if (hay.includes(s)) hits.push(t);
+    }
+    return hits;
+  }
+
+  function renderList(q) {
+    filtered = filterTasks(q);
+    const taken = new Set(entries.map(e => e.task));
+    const savedTasks = new Set(entries.filter(e => e.saved).map(e => e.task));
+    activeIdx = filtered.findIndex(t => !taken.has(t));
+
+    if (!filtered.length) {
+      listEl.innerHTML = '<div class="combo-empty">No day matches that. Try a day number or a topic word.</div>';
+      countEl.textContent = '';
+      return;
+    }
+
+    const query = q.trim();
+    listEl.innerHTML = filtered.map((t, i) => {
+      const d = DAY_BY_LABEL[t];
+      const isTaken = taken.has(t);
+      return '<div class="combo-opt' + (isTaken ? ' taken' : '') + (i === activeIdx ? ' active' : '') +
+             '" role="option" data-i="' + i + '">' +
+               '<div class="opt-day">' + highlight(d.day, query) +
+                 (isTaken ? (savedTasks.has(t) ? ' &middot; submitted' : ' &middot; added') : '') + '</div>' +
+               '<div class="opt-topic">' + highlight(d.topic, query) + '</div>' +
+               '<div class="opt-submit">' + esc(d.submit) + '</div>' +
+             '</div>';
+    }).join('');
+
+    countEl.textContent = filtered.length + ' of ' + TASKS.length + ' days';
+  }
+
+  const openList = () => { listEl.classList.add('open'); searchEl.setAttribute('aria-expanded', 'true'); };
+  const closeList = () => { listEl.classList.remove('open'); searchEl.setAttribute('aria-expanded', 'false'); countEl.textContent = ''; };
+
+  function setActive(dir) {
+    const opts = [...listEl.querySelectorAll('.combo-opt:not(.taken)')];
+    if (!opts.length) return;
+    const cur = opts.findIndex(o => o.classList.contains('active'));
+    const next = opts[(cur + dir + opts.length) % opts.length];
+    listEl.querySelectorAll('.combo-opt').forEach(o => o.classList.remove('active'));
+    next.classList.add('active');
+    activeIdx = Number(next.dataset.i);
+    next.scrollIntoView({ block: 'nearest' });
+  }
+
+  function pick(i) {
+    const task = filtered[i];
+    if (!task || entries.some(e => e.task === task)) return;
+    addEntry(task);
+    searchEl.value = '';
+    closeList();
+  }
+
+  searchEl.addEventListener('input', () => { renderList(searchEl.value); openList(); });
+  searchEl.addEventListener('focus', () => { renderList(searchEl.value); openList(); });
+  searchEl.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); openList(); setActive(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(-1); }
+    else if (e.key === 'Enter') { e.preventDefault(); pick(activeIdx); }
+    else if (e.key === 'Escape') { closeList(); }
+  });
+  listEl.addEventListener('mousedown', (e) => {
+    const opt = e.target.closest('.combo-opt');
+    if (!opt || opt.classList.contains('taken')) return;
+    e.preventDefault();
+    pick(Number(opt.dataset.i));
+  });
+  document.addEventListener('click', (e) => { if (!e.target.closest('#f-task')) closeList(); });
+
+
+  /* ---------- prefill from the sheet, keyed on email ---------- */
+
+  const loadNote = byId('loadNote');
+  const emailEl = byId('email');
+  let lastLookup = '';
+
+  // Apps Script redirects break plain fetch, so go through JSONP.
+  function jsonp(url, timeoutMs) {
+    return new Promise((resolve, reject) => {
+      const cb = 'cb_' + Math.random().toString(36).slice(2);
+      const script = document.createElement('script');
+      const timer = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, timeoutMs || 8000);
+
+      function cleanup() {
+        clearTimeout(timer);
+        delete window[cb];
+        if (script.parentNode) script.parentNode.removeChild(script);
+      }
+
+      window[cb] = (data) => { cleanup(); resolve(data); };
+      script.onerror = () => { cleanup(); reject(new Error('network')); };
+      script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+      document.head.appendChild(script);
+    });
+  }
+
+  async function prefill(email) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      if (email) setInvalid('f-email', true);
+      return;
+    }
+    setInvalid('f-email', false);
+    if (email.toLowerCase() === lastLookup) return;
+    lastLookup = email.toLowerCase();
+
+    loadNote.classList.add('show');
+    try {
+      const data = await jsonp(SCRIPT_URL + '?email=' + encodeURIComponent(email));
+      const found = (data && data.tasks) || [];
+
+      if (!found.length) {
+        loadNote.classList.remove('show');
+        setUnlocked(true);
+        show('ok', 'Nothing on file for this email yet. Add your days below.');
+        return;
+      }
+
+      // Keep anything the student already typed this session; fill the rest from the sheet.
+      const mine = new Set(entries.map(e => e.task));
+      for (const t of found) {
+        if (mine.has(t.taskName)) continue;
+        if (!DAY_BY_LABEL[t.taskName]) continue;
+        entries.push({
+          id: nextId++,
+          task: t.taskName,
+          repoLink: t.repoLink || '',
+          liveLink: t.liveLink || '',
+          notes: t.notes || '',
+          saved: true
+        });
+      }
+      entries.sort((a, b) => Number(num(a.task)) - Number(num(b.task)));
+      renderEntries();
+
+      const nameEl = byId('name');
+      if (data.name && !nameEl.value.trim()) nameEl.value = data.name;
+
+      loadNote.classList.remove('show');
+      setUnlocked(true);
+      show('ok', 'Loaded ' + found.length + (found.length === 1 ? ' day' : ' days') +
+                 ' you already submitted. Edit anything, then send again.');
+    } catch (err) {
+      loadNote.classList.remove('show');
+      setUnlocked(true);
+      show('bad', 'Could not load your earlier submissions, so start fresh below. Anything you send will still be saved.');
+    }
+  }
+
+  emailEl.addEventListener('blur', () => prefill(emailEl.value.trim()));
+  emailEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); prefill(emailEl.value.trim()); }
+  });
+
+  // Changing the email invalidates whatever was loaded for the previous one.
+  emailEl.addEventListener('input', () => {
+    if (!unlocked) return;
+    if (emailEl.value.trim().toLowerCase() === lastLookup) return;
+    setUnlocked(false);
+    lastLookup = '';
+    entries = [];
+    renderEntries();
+    statusEl.className = 'status';
+  });
+
+  /* ---------- validate + send ---------- */
+
+  function validate(name, email) {
+    let ok = true;
+
+    setInvalid('f-name', !name);
+    if (!name) ok = false;
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setInvalid('f-email', !emailOk);
+    if (!emailOk) ok = false;
+
+    if (!entries.length) {
+      byId('taskError').textContent = 'Add at least one day.';
+      setInvalid('f-task', true);
+      ok = false;
+    }
+
+    let firstBad = null;
+    for (const en of entries) {
+      const node = entriesEl.querySelector('.entry[data-id="' + en.id + '"]');
+      const repoOk = isUrl(en.repoLink) && en.repoLink.trim().toLowerCase().startsWith('https://github.com/');
+      node.querySelector('[data-f="repo"]').classList.toggle('invalid', !repoOk);
+      if (!repoOk) { ok = false; firstBad = firstBad || node; }
+
+      const liveOk = !en.liveLink.trim() || isUrl(en.liveLink.trim());
+      node.querySelector('[data-f="live"]').classList.toggle('invalid', !liveOk);
+      if (!liveOk) { ok = false; firstBad = firstBad || node; }
+    }
+    if (firstBad) firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    return ok;
+  }
+
+  btn.addEventListener('click', async () => {
+    const name = byId('name').value.trim();
+    const email = byId('email').value.trim();
+
+    if (!validate(name, email)) {
+      show('bad', 'Some fields need fixing. They are marked in red.');
+      return;
+    }
+
+    const payload = {
+      name, email,
+      tasks: entries.map(e => ({
+        taskName: e.task,
+        repoLink: e.repoLink.trim(),
+        liveLink: e.liveLink.trim(),
+        notes: e.notes.trim()
+      }))
+    };
+
+    btn.disabled = true;
+    btn.textContent = 'sending...';
+    statusEl.className = 'status';
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      const n = entries.length;
+      entries.forEach(e => { e.saved = true; });
+      renderEntries();
+      searchEl.value = '';
+      show('ok', 'Sent. ' + n + (n === 1 ? ' day is' : ' days are') + ' on the sheet. You can keep editing and send again.');
+    } catch (err) {
+      show('bad', 'Could not reach the sheet. Check your connection and send again.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Send to the sheet';
+    }
+  });
+
+  renderEntries();
+  setUnlocked(false);
+</script>
+</body>
+</html>
