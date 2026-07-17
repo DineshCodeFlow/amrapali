@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -441,7 +442,7 @@
 </div>
 
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwP_gPFz2e-7j0LDAx6FZ4ibGbSF9ksN6xo5kMbaLnWX5N1BkmmbHcbXJk8MFi0YYVc/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxz_N6FtN2czmhAqy0I83Yxn6uzKYKtAnTeNXehCbyKoN1THrhoK-sR3SLKUhd9uP2d/exec';
 
   const DAYS = [
     {
@@ -554,6 +555,7 @@
   const countEl = byId('taskCount');
 
   const TASKS = DAYS.map(d => d.day + ' - ' + d.topic);
+  const TASKS_DESC = TASKS.slice().reverse();   // newest day first
   const DAY_BY_LABEL = {};
   DAYS.forEach(d => { DAY_BY_LABEL[d.day + ' - ' + d.topic] = d; });
 
@@ -588,7 +590,7 @@
   function renderRail() {
     const state = {};
     entries.forEach(e => { state[num(e.task)] = e.saved ? 'saved' : 'filled'; });
-    railEl.innerHTML = DAYS.map(d => {
+    railEl.innerHTML = DAYS.slice().reverse().map(d => {
       const n = d.day.replace(/\D/g, '');
       const st = state[n];
       const word = st === 'saved' ? ', already submitted' : st ? ', added' : '';
@@ -671,7 +673,7 @@
   function addEntry(task) {
     if (entries.some(e => e.task === task)) return;
     entries.push({ id: nextId++, task, repoLink: '', liveLink: '', notes: '', saved: false });
-    entries.sort((a, b) => Number(num(a.task)) - Number(num(b.task)));
+    entries.sort((a, b) => Number(num(b.task)) - Number(num(a.task)));
     renderEntries();
     const node = entriesEl.querySelector('.entry[data-task="' + CSS.escape(task) + '"]');
     if (node) {
@@ -693,9 +695,9 @@
 
   function filterTasks(q) {
     const s = q.trim().toLowerCase();
-    if (!s) return TASKS.slice();
+    if (!s) return TASKS_DESC.slice();
     const hits = [];
-    for (const t of TASKS) {
+    for (const t of TASKS_DESC) {
       const d = DAY_BY_LABEL[t];
       const hay = (d.day + ' ' + d.topic + ' ' + d.task + ' ' + d.submit).toLowerCase();
       if (hay.includes(s)) hits.push(t);
@@ -831,7 +833,7 @@
           saved: true
         });
       }
-      entries.sort((a, b) => Number(num(a.task)) - Number(num(b.task)));
+      entries.sort((a, b) => Number(num(b.task)) - Number(num(a.task)));
       renderEntries();
 
       const nameEl = byId('name');
