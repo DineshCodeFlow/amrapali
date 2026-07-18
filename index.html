@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Daily submissions &middot; Day 1 to Day 16</title>
+<title>Daily submissions &middot; Day 1 to Day 17</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -385,12 +385,12 @@
 <body>
 <div class="wrap">
   <p class="eyebrow">Amrapali University &middot; Full-Stack &amp; QA</p>
-  <h1>Daily submissions <span class="slash">/</span> 16</h1>
+  <h1>Daily submissions <span class="slash">/</span> 17</h1>
   <p class="meta">Instructor: <b>Dinesh Rawat</b>. Add every day you have finished, paste the links, send it once. Each day lands as its own row, so nothing you submit can wipe out anyone else's work.</p>
 
-  <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 16"></div>
+  <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 17"></div>
   <div class="rail-legend">
-    <span id="railStatus">0 of 16 added</span>
+    <span id="railStatus">0 of 17 added</span>
     <span id="railHint">enter your email first</span>
   </div>
 
@@ -540,6 +540,12 @@
       "topic": "Live Coding Session",
       "task": "I wrote the code live, ran it, and showed the whole thing working end to end, the source and the data behind it. Complete the same yourself. The reference zip of the session code is shared. Watching is not building: type it out, run it, break it, fix it.",
       "submit": "Repo (your own build)"
+    },
+    {
+      "day": "DAY 17",
+      "topic": "Doubt-Clearing: MVC, APIs & JS",
+      "task": "Module 4, Backend. Doubt-clearing session revisiting earlier topics from the ground up: MVC architecture (routes, controllers, models and why each stays in its lane); backend and APIs (request, response, status codes, JSON, and why Postman); JavaScript from basics through array methods; error handling (try/catch and returning the right status code); and Git/GitHub (add, commit, push, real commit messages). A notes PDF covering all of it is shared — read it once tonight. The assignment will be planned later, so no repo is due yet.",
+      "submit": "Read the notes PDF (no repo due yet)"
     }
   ];
 
@@ -599,7 +605,7 @@
              'aria-label="' + esc(d.day + ', ' + d.topic + word) + '">' + n + '</button>';
     }).join('');
     const done = Object.keys(state).length;
-    railStatus.innerHTML = done ? '<b>' + done + '</b> of 16 added' : '0 of 16 added';
+    railStatus.innerHTML = done ? '<b>' + done + '</b> of 17 added' : '0 of 17 added';
   }
 
   railEl.addEventListener('click', (e) => {
