@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -201,6 +200,30 @@
   .combo-opt.taken .opt-day { color: var(--dim); }
   .opt-topic { font-size: 14px; font-weight: 500; }
   .opt-submit { font-size: 11.5px; color: var(--faint); margin-top: 1px; }
+  .opt-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+    margin-top: 5px;
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    color: var(--dim);
+    background: var(--bg);
+    border: 1px solid var(--edge);
+    border-radius: 3px;
+    padding: 2px 6px;
+  }
+  .chip.mod { color: var(--go); border-color: var(--go-deep); }
+  .brief-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+  }
   .combo-opt mark { background: rgba(240,180,94,0.28); color: var(--warn); border-radius: 2px; }
   .combo-empty { padding: 14px 10px; font-size: 13px; color: var(--dim); }
   .combo-count {
@@ -417,22 +440,23 @@
       <span class="key">&#9679;</span>
       <span>Enter your email above to load your submissions and unlock this section.</span>
     </div>
+    <div class="field" id="f-task">
+      <div class="combo">
+        <input id="taskSearch" type="text" autocomplete="off"
+               role="combobox" aria-expanded="false" aria-controls="taskList"
+               placeholder="Search a day, topic, module or tag (try &quot;http&quot;, &quot;postman&quot;, &quot;doubts&quot;)">
+        <div class="combo-list" id="taskList" role="listbox"></div>
+      </div>
+      <div class="combo-count" id="taskCount"></div>
+      <div class="error" id="taskError">Pick a day from the list.</div>
+    </div>
+
     <div id="entries"></div>
     <div class="empty-state" id="emptyState">
       Nothing added yet. Search below, or tap a slot in the rail.<br>
       Try <code>flex</code>, <code>express</code>, or <code>14</code>.
     </div>
 
-    <div class="field" id="f-task" style="margin-top:14px">
-      <div class="combo">
-        <input id="taskSearch" type="text" autocomplete="off"
-               role="combobox" aria-expanded="false" aria-controls="taskList"
-               placeholder="Search a day or topic">
-        <div class="combo-list" id="taskList" role="listbox"></div>
-      </div>
-      <div class="combo-count" id="taskCount"></div>
-      <div class="error" id="taskError">Pick a day from the list.</div>
-    </div>
   </div>
 
   <button class="btn" id="submitBtn" type="button">Send to the sheet</button>
@@ -449,103 +473,201 @@
       "day": "DAY 1",
       "topic": "How a Website Works",
       "task": "Come prepared with questions. Get active on LinkedIn: follow mentors and track the market. Update your email to a professional format.",
-      "submit": "LinkedIn profile"
+      "submit": "LinkedIn profile",
+      "module": "Module 1",
+      "tags": [
+        "HTML",
+        "LinkedIn",
+        "web basics"
+      ]
     },
     {
       "day": "DAY 2",
       "topic": "Debugging & DevTools",
       "task": "Open shorterloop.com in Chrome DevTools (Network tab) and observe the requests. Run nslookup and dig from the terminal. Screenshot both. Document 4-5 requests in a README (type, status code, one header each) plus the nslookup output. Push to a public repo.",
-      "submit": "Repo (network analysis)"
+      "submit": "Repo (network analysis)",
+      "module": "Module 1",
+      "tags": [
+        "DevTools",
+        "DNS",
+        "README"
+      ]
     },
     {
       "day": "DAY 3",
       "topic": "HTML5 Tags",
       "task": "Build your resume in HTML: name + photo, about, education, skills, projects, hobbies, contact, footer. Semantic tags only, no div or span. Include LinkedIn and GitHub links. Repo named 'resume'. No AI.",
-      "submit": "Repo ('resume')"
+      "submit": "Repo ('resume')",
+      "module": "Module 1",
+      "tags": [
+        "HTML5",
+        "semantic tags"
+      ]
     },
     {
       "day": "DAY 4",
       "topic": "Resume Build & CSS Recap",
       "task": "Style your resume with everything covered. Add learnings/css.md written in your own words. Build three practice projects: a profile card, a navigation bar, and a button collection with hover states. Keep it in one organised repo. Submit using terminal Git.",
-      "submit": "Repo, or CodePen for the 3 projects"
+      "submit": "Repo, or CodePen for the 3 projects",
+      "module": "Module 2",
+      "tags": [
+        "CSS",
+        "resume",
+        "CodePen"
+      ]
     },
     {
       "day": "DAY 5",
       "topic": "CSS Boilerplate & Selectors",
       "task": "Live build and revamp. Rework the test resume built in class, then apply the same thinking to improve your own. Correct semantic tags throughout, no div or span, clear structure, working LinkedIn and GitHub links. Put the revamp in a new folder in the same repo.",
-      "submit": "Repo ('resume' / revamp)"
+      "submit": "Repo ('resume' / revamp)",
+      "module": "Module 2",
+      "tags": [
+        "CSS",
+        "selectors"
+      ]
     },
     {
       "day": "DAY 6",
       "topic": "Box Model, Flexbox & Grid",
       "task": "Practise the box model, Flexbox and Grid from the session on real layouts.",
-      "submit": "Repo or CodePen"
+      "submit": "Repo or CodePen",
+      "module": "Module 2",
+      "tags": [
+        "box model",
+        "flexbox",
+        "grid"
+      ]
     },
     {
       "day": "DAY 7",
       "topic": "Flexbox vs Grid",
       "task": "Practise choosing between Flexbox and Grid, and be able to justify the choice.",
-      "submit": "Repo or CodePen"
+      "submit": "Repo or CodePen",
+      "module": "Module 2",
+      "tags": [
+        "flexbox",
+        "grid"
+      ]
     },
     {
       "day": "DAY 8",
       "topic": "Styling the Resume with CSS",
       "task": "Continue styling your resume with everything covered in the session.",
-      "submit": "Repo"
+      "submit": "Repo",
+      "module": "Module 2",
+      "tags": [
+        "CSS",
+        "resume"
+      ]
     },
     {
       "day": "DAY 9",
       "topic": "Objects & Array Methods",
       "task": "Put the session notes into GitHub in your own words. Practise the array methods: forEach, map, filter, find, some, every, sort, reduce. Complete the practice questions.",
-      "submit": "Repo (notes + practice)"
+      "submit": "Repo (notes + practice)",
+      "module": "Module 3",
+      "tags": [
+        "JavaScript",
+        "objects",
+        "array methods"
+      ]
     },
     {
       "day": "DAY 10",
       "topic": "Functions in JavaScript",
       "task": "Add the session notes to GitHub, written in your own words.",
-      "submit": "Repo (notes)"
+      "submit": "Repo (notes)",
+      "module": "Module 3",
+      "tags": [
+        "JavaScript",
+        "functions"
+      ]
     },
     {
       "day": "DAY 11",
       "topic": "HTTP Standards & REST APIs",
       "task": "Add the session notes to your GitHub repo, written in your own words.",
-      "submit": "Repo (notes)"
+      "submit": "Repo (notes)",
+      "module": "Module 4",
+      "tags": [
+        "HTTP",
+        "REST",
+        "GET/POST/PUT/DELETE"
+      ]
     },
     {
       "day": "DAY 12",
       "topic": "Endpoints + JS & Browser Storage",
       "task": "Identify the resources and map the API endpoints and methods for the AI Resume Builder. Write the session notes in your own words on GitHub. Build login and register pages and wire them into the ResumeFlow project, with entry buttons on the main page. Store the selected theme in Local Storage, save temporary form data in Session Storage, inspect website Cookies in DevTools, and create a simple IndexedDB database to store resumes or notes.",
-      "submit": "Repo (notes + ResumeFlow + storage demo)"
+      "submit": "Repo (notes + ResumeFlow + storage demo)",
+      "module": "Module 4",
+      "tags": [
+        "endpoints",
+        "localStorage",
+        "sessionStorage"
+      ]
     },
     {
       "day": "DAY 13",
       "topic": "Full Web Flow & Express",
       "task": "Build every API route for the AI Resume Builder, all resources from Auth through Applications. Full specification is in the notes PDF.",
-      "submit": "Repo ('resume-api')"
+      "submit": "Repo ('resume-api')",
+      "module": "Module 4",
+      "tags": [
+        "Express",
+        "full web flow"
+      ]
     },
     {
       "day": "DAY 14",
       "topic": "Backend Practical",
       "task": "Complete any pending API work, install Postman, and finish all outstanding tasks.",
-      "submit": "Repo ('resume-api') + Postman"
+      "submit": "Repo ('resume-api') + Postman",
+      "module": "Module 4",
+      "tags": [
+        "backend",
+        "Postman",
+        "API"
+      ]
     },
     {
       "day": "DAY 15",
       "topic": "Express, Middleware, npm",
       "task": "Make the folders: routes, controllers, models, middleware. Get the hello route working and tested in Postman. Install PowerShell and use it instead of Command Prompt. Be able to explain what your package.json says. Read the notes PDF while it is fresh.",
-      "submit": "Repo + Postman collection"
+      "submit": "Repo + Postman collection",
+      "module": "Module 4",
+      "tags": [
+        "Express",
+        "middleware",
+        "npm",
+        "Postman"
+      ]
     },
     {
       "day": "DAY 16",
       "topic": "Live Coding Session",
       "task": "I wrote the code live, ran it, and showed the whole thing working end to end, the source and the data behind it. Complete the same yourself. The reference zip of the session code is shared. Watching is not building: type it out, run it, break it, fix it.",
-      "submit": "Repo (your own build)"
+      "submit": "Repo (your own build)",
+      "module": "Module 4",
+      "tags": [
+        "live coding",
+        "build"
+      ]
     },
     {
       "day": "DAY 17",
       "topic": "Doubt-Clearing: MVC, APIs & JS",
       "task": "Module 4, Backend. Doubt-clearing session revisiting earlier topics from the ground up: MVC architecture (routes, controllers, models and why each stays in its lane); backend and APIs (request, response, status codes, JSON, and why Postman); JavaScript from basics through array methods; error handling (try/catch and returning the right status code); and Git/GitHub (add, commit, push, real commit messages). A notes PDF covering all of it is shared — read it once tonight. The assignment will be planned later, so no repo is due yet.",
-      "submit": "Read the notes PDF (no repo due yet)"
+      "submit": "Read the notes PDF (no repo due yet)",
+      "module": "Module 4",
+      "tags": [
+        "doubts",
+        "MVC",
+        "APIs",
+        "try/catch",
+        "Git"
+      ]
     }
   ];
 
@@ -638,6 +760,8 @@
           '<button class="remove" type="button" data-remove="' + en.id + '">' + (en.saved ? 'discard' : 'remove') + '</button>' +
         '</div>' +
         '<div class="brief">' + esc(d.task || '') +
+          '<div class="brief-tags"><span class="chip mod">' + esc(d.module || '') + '</span>' +
+            (d.tags || []).map(tg => '<span class="chip">' + esc(tg) + '</span>').join('') + '</div>' +
           '<div class="brief-submit">expects: ' + esc(d.submit || '') + '</div>' +
         '</div>' +
         '<div class="field" data-f="repo">' +
@@ -705,7 +829,7 @@
     const hits = [];
     for (const t of TASKS_DESC) {
       const d = DAY_BY_LABEL[t];
-      const hay = (d.day + ' ' + d.topic + ' ' + d.task + ' ' + d.submit).toLowerCase();
+      const hay = (d.day + ' ' + d.topic + ' ' + d.task + ' ' + d.submit + ' ' + (d.module||'') + ' ' + (d.tags||[]).join(' ')).toLowerCase();
       if (hay.includes(s)) hits.push(t);
     }
     return hits;
@@ -727,12 +851,15 @@
     listEl.innerHTML = filtered.map((t, i) => {
       const d = DAY_BY_LABEL[t];
       const isTaken = taken.has(t);
+      const chips = '<span class="chip mod">' + esc(d.module || '') + '</span>' +
+                    (d.tags || []).map(tg => '<span class="chip">' + highlight(tg, query) + '</span>').join('');
       return '<div class="combo-opt' + (isTaken ? ' taken' : '') + (i === activeIdx ? ' active' : '') +
              '" role="option" data-i="' + i + '">' +
                '<div class="opt-day">' + highlight(d.day, query) +
                  (isTaken ? (savedTasks.has(t) ? ' &middot; submitted' : ' &middot; added') : '') + '</div>' +
                '<div class="opt-topic">' + highlight(d.topic, query) + '</div>' +
                '<div class="opt-submit">' + esc(d.submit) + '</div>' +
+               '<div class="opt-meta">' + chips + '</div>' +
              '</div>';
     }).join('');
 
