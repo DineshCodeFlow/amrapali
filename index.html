@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Daily submissions &middot; Day 1 to Day 17</title>
+<title>Daily submissions &middot; Day 1 to Day 18</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -408,12 +408,12 @@
 <body>
 <div class="wrap">
   <p class="eyebrow">Amrapali University &middot; Full-Stack &amp; QA</p>
-  <h1>Daily submissions <span class="slash">/</span> 17</h1>
+  <h1>Daily submissions <span class="slash">/</span> 18</h1>
   <p class="meta">Instructor: <b>Dinesh Rawat</b>. Add every day you have finished, paste the links, send it once. Each day lands as its own row, so nothing you submit can wipe out anyone else's work.</p>
 
-  <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 17"></div>
+  <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 18"></div>
   <div class="rail-legend">
-    <span id="railStatus">0 of 17 added</span>
+    <span id="railStatus">0 of 18 added</span>
     <span id="railHint">enter your email first</span>
   </div>
 
@@ -668,6 +668,20 @@
         "try/catch",
         "Git"
       ]
+    },
+    {
+      "day": "DAY 18",
+      "topic": "MySQL, Tables & Joins",
+      "module": "Module 4",
+      "tags": [
+        "MySQL",
+        "database",
+        "SQL",
+        "joins",
+        "foreign key"
+      ],
+      "task": "Module 4, Database (Class 1 of 5). Why a flat file isn't enough: data is lost when two people save at once and searching is slow, a database fixes both. Install MySQL Server and MySQL Workbench (server is the database, Workbench is the window to run queries), set a root password. Create a database by hand: CREATE DATABASE resume_db then USE resume_db. Understand server vs database vs table vs row. Build a users table with id (AUTO_INCREMENT PRIMARY KEY), name (NOT NULL), email (NOT NULL UNIQUE). Add rows with INSERT, read them with SELECT, filter with WHERE. Create a second resumes table with a FOREIGN KEY to users, then JOIN the two to read them together, matching resumes.userId to users.id.",
+      "submit": "Repo with your SQL script (CREATE, INSERT, SELECT, JOIN)"
     }
   ];
 
@@ -727,7 +741,7 @@
              'aria-label="' + esc(d.day + ', ' + d.topic + word) + '">' + n + '</button>';
     }).join('');
     const done = Object.keys(state).length;
-    railStatus.innerHTML = done ? '<b>' + done + '</b> of 17 added' : '0 of 17 added';
+    railStatus.innerHTML = done ? '<b>' + done + '</b> of 18 added' : '0 of 18 added';
   }
 
   railEl.addEventListener('click', (e) => {
