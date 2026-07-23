@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Daily submissions &middot; Day 1 to Day 18</title>
+<title>Daily submissions &middot; Day 1 to Day 19</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -408,12 +408,12 @@
 <body>
 <div class="wrap">
   <p class="eyebrow">Amrapali University &middot; Full-Stack &amp; QA</p>
-  <h1>Daily submissions <span class="slash">/</span> 18</h1>
+  <h1>Daily submissions <span class="slash">/</span> 19</h1>
   <p class="meta">Instructor: <b>Dinesh Rawat</b>. Add every day you have finished, paste the links, send it once. Each day lands as its own row, so nothing you submit can wipe out anyone else's work.</p>
 
-  <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 18"></div>
+  <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 19"></div>
   <div class="rail-legend">
-    <span id="railStatus">0 of 18 added</span>
+    <span id="railStatus">0 of 19 added</span>
     <span id="railHint">enter your email first</span>
   </div>
 
@@ -468,7 +468,7 @@
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxz_N6FtN2czmhAqy0I83Yxn6uzKYKtAnTeNXehCbyKoN1THrhoK-sR3SLKUhd9uP2d/exec';
 
-  const DAYS = [
+  const DAYS =   [
     {
       "day": "DAY 1",
       "topic": "How a Website Works",
@@ -682,9 +682,22 @@
       ],
       "task": "Module 4, Database (Class 1 of 5). Why a flat file isn't enough: data is lost when two people save at once and searching is slow, a database fixes both. Install MySQL Server and MySQL Workbench (server is the database, Workbench is the window to run queries), set a root password. Create a database by hand: CREATE DATABASE resume_db then USE resume_db. Understand server vs database vs table vs row. Build a users table with id (AUTO_INCREMENT PRIMARY KEY), name (NOT NULL), email (NOT NULL UNIQUE). Add rows with INSERT, read them with SELECT, filter with WHERE. Create a second resumes table with a FOREIGN KEY to users, then JOIN the two to read them together, matching resumes.userId to users.id.",
       "submit": "Repo with your SQL script (CREATE, INSERT, SELECT, JOIN)"
+    },
+    {
+      "day": "DAY 19",
+      "topic": "Security & Backend Thinking",
+      "module": "Module 4",
+      "tags": [
+        "security",
+        "brute force",
+        "IP & location",
+        "ethical hacking",
+        "backend instinct"
+      ],
+      "task": "Module 4, Database and Security. The session covered how PIN and password guessing (brute force) works and why it fails against a real system, what a clicked link actually reveals about someone's location (public IP and a rough area, never an exact address), what information the browser exposes in HTML, CSS and JavaScript, who ethical hackers are, and how a site gets flooded with thousands of fake records. Read the notes and answers PDF once tonight. Then complete the quiz: the last ten questions go past recall to test backend instinct, tracing a problem through the system, trusting evidence over hunches, and measuring before you change code. Submit the quiz link, plus a notes repo if you kept one.",
+      "submit": "Quiz submission (+ notes repo if any)"
     }
   ];
-
   const byId = (id) => document.getElementById(id);
   const statusEl = byId('status');
   const btn = byId('submitBtn');
@@ -741,7 +754,7 @@
              'aria-label="' + esc(d.day + ', ' + d.topic + word) + '">' + n + '</button>';
     }).join('');
     const done = Object.keys(state).length;
-    railStatus.innerHTML = done ? '<b>' + done + '</b> of 18 added' : '0 of 18 added';
+    railStatus.innerHTML = done ? '<b>' + done + '</b> of 19 added' : '0 of 19 added';
   }
 
   railEl.addEventListener('click', (e) => {
