@@ -773,6 +773,21 @@
       ],
       "task": "Module 4, Database. We generated all nine Resume Forge tables with sequelize-cli (User, Template, Document, Section, Item, Version, Application, Share, Export), walked through the structure each model:generate command creates, and drew the full ER diagram showing how the tables connect. Read the class-notes PDF thoroughly tonight. Then build it yourself: run all nine model:generate commands in a fresh project, open the generated files and find the empty associate() and the plain foreign-key columns, add the references plus onDelete rules and the associations, and run db:migrate so all nine tables appear in your database. Then break it on purpose: rename a migration so a child runs before its parent and read the error, undo everything with db:migrate:undo:all and rebuild, and feed a wrong value into an enum column and watch the database refuse it. Come to the next class with it working, or with the exact error you got stuck on. Tomorrow we write the real APIs on top of these tables.",
       "submit": "Repo with all 9 models + migrations (db:migrate working) and notes in your own words"
+    },
+    {
+      "day": "DAY 23",
+      "topic": "Backend APIs, Password Security, and Promises",
+      "module": "Module 4",
+      "tags": [
+        "Sequelize",
+        "models",
+        "migrations",
+        "ER diagram",
+        "database design",
+        "foreign keys"
+      ],
+      "task": "we worked on real backend topics through our API. We built the register endpoint and covered how passwords are stored safely with one way hashing. Then we moved to Promises, why they exist and how they work, callback hell and how it makes code messy, and the two ways out of it: Promise chains and async await.",
+      "submit": "Repo with all 9 models + migrations (db:migrate working) and notes in your own words"
     }
   ];
   const byId = (id) => document.getElementById(id);
