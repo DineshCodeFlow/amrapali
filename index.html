@@ -403,6 +403,36 @@
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
   }
+
+  /* ---- sticky submit bar ---- */
+  .submit-bar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 50;
+    background: rgba(16,21,28,0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--edge);
+    padding: 12px 20px;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.35);
+  }
+  .submit-bar-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .submit-bar .btn { width: auto; flex: 0 0 auto; min-width: 200px; padding: 13px 22px; }
+  .submit-bar .status { margin-top: 0; flex: 1; display: none; }
+  .submit-bar .status.show { display: block; }
+  @media (max-width: 560px) {
+    .submit-bar-inner { flex-direction: column; align-items: stretch; gap: 9px; }
+    .submit-bar .btn { width: 100%; min-width: 0; }
+  }
+  /* keep the last content clear of the fixed bar */
+  body { padding-bottom: 120px; }
+
 </style>
 </head>
 <body>
@@ -459,10 +489,14 @@
 
   </div>
 
-  <button class="btn" id="submitBtn" type="button">Send to the sheet</button>
-  <div class="status" id="status"></div>
-
   <p class="note">Sending a day twice is fine. The newer row wins at review, so if you fix something, just send it again.</p>
+</div>
+
+<div class="submit-bar">
+  <div class="submit-bar-inner">
+    <button class="btn" id="submitBtn" type="button">Send to the sheet</button>
+    <div class="status" id="status"></div>
+  </div>
 </div>
 
 <script>
@@ -1022,14 +1056,21 @@
         return;
       }
 
+      // Map each day number to the page's own full label, so the sheet's topic
+      // text never has to match. Fixes entries blanking on refresh.
+      const DAY_BY_NUM = {};
+      DAYS.forEach(d => { DAY_BY_NUM[d.day] = d.day + ' - ' + d.topic; });
+
       // Keep anything the student already typed this session; fill the rest from the sheet.
       const mine = new Set(entries.map(e => e.task));
       for (const t of found) {
-        if (mine.has(t.taskName)) continue;
-        if (!DAY_BY_LABEL[t.taskName]) continue;
+        // Accept the new dayKey ("DAY 17") or an old full label, for safety.
+        const label = t.dayKey ? DAY_BY_NUM[t.dayKey] : t.taskName;
+        if (!label || !DAY_BY_LABEL[label]) continue;
+        if (mine.has(label)) continue;
         entries.push({
           id: nextId++,
-          task: t.taskName,
+          task: label,
           repoLink: t.repoLink || '',
           liveLink: t.liveLink || '',
           notes: t.notes || '',
