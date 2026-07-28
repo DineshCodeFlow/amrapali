@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Daily submissions &middot; Day 1 to Day 19</title>
+<title>Daily submissions &middot; Day 1 to Day 22</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -408,12 +408,12 @@
 <body>
 <div class="wrap">
   <p class="eyebrow">Amrapali University &middot; Full-Stack &amp; QA</p>
-  <h1>Daily submissions <span class="slash">/</span> 19</h1>
+  <h1>Daily submissions <span class="slash">/</span> 22</h1>
   <p class="meta">Instructor: <b>Dinesh Rawat</b>. Add every day you have finished, paste the links, send it once. Each day lands as its own row, so nothing you submit can wipe out anyone else's work.</p>
 
-  <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 19"></div>
+  <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 22"></div>
   <div class="rail-legend">
-    <span id="railStatus">0 of 19 added</span>
+    <span id="railStatus">0 of 22 added</span>
     <span id="railHint">enter your email first</span>
   </div>
 
@@ -658,7 +658,7 @@
     {
       "day": "DAY 17",
       "topic": "Doubt-Clearing: MVC, APIs & JS",
-      "task": "Module 4, Backend. Doubt-clearing session revisiting earlier topics from the ground up: MVC architecture (routes, controllers, models and why each stays in its lane); backend and APIs (request, response, status codes, JSON, and why Postman); JavaScript from basics through array methods; error handling (try/catch and returning the right status code); and Git/GitHub (add, commit, push, real commit messages). A notes PDF covering all of it is shared — read it once tonight. The assignment will be planned later, so no repo is due yet.",
+      "task": "Module 4, Backend. Doubt-clearing session revisiting earlier topics from the ground up: MVC architecture (routes, controllers, models and why each stays in its lane); backend and APIs (request, response, status codes, JSON, and why Postman); JavaScript from basics through array methods; error handling (try/catch and returning the right status code); and Git/GitHub (add, commit, push, real commit messages). A notes PDF covering all of it is shared read it once tonight. The assignment will be planned later, so no repo is due yet.",
       "submit": "Read the notes PDF (no repo due yet)",
       "module": "Module 4",
       "tags": [
@@ -696,9 +696,10 @@
       ],
       "task": "Module 4, Database and Security. The session covered how PIN and password guessing (brute force) works and why it fails against a real system, what a clicked link actually reveals about someone's location (public IP and a rough area, never an exact address), what information the browser exposes in HTML, CSS and JavaScript, who ethical hackers are, and how a site gets flooded with thousands of fake records. Read the notes and answers PDF once tonight. Then complete the quiz: the last ten questions go past recall to test backend instinct, tracing a problem through the system, trusting evidence over hunches, and measuring before you change code. Submit the quiz link, plus a notes repo if you kept one.",
       "submit": "Quiz submission (+ notes repo if any)"
-    },  {
+    },
+    {
       "day": "DAY 20",
-      "topic": "ORM- Sequelize overview",
+      "topic": "ORM: Sequelize Overview",
       "module": "Module 4",
       "tags": [
         "ORM",
@@ -707,21 +708,37 @@
         "MySQL",
         "Database"
       ],
-      "task": "Learning about sequelize, putting the provided pdf in the git and practicing the seqelize implementations",
-      "submit": "Adding the provided pdf file to github and writing the nodes in your own workds"
-    },  {
+      "task": "Module 4, Database. Introduction to Sequelize, the ORM that lets you talk to MySQL in JavaScript instead of raw SQL. Read the provided PDF, add it to your GitHub, and write the notes in your own words. Practise the basic Sequelize setup: the connection, defining a model, and running a simple query.",
+      "submit": "Add the provided PDF to GitHub and write the notes in your own words"
+    },
+    {
       "day": "DAY 21",
-      "topic": "ORM- Sequelize migration+seed",
+      "topic": "ORM: Sequelize Migrations & Seeding",
       "module": "Module 4",
       "tags": [
         "ORM",
         "Express",
         "Sequelize",
-        "MySQL",
-        "Database"
+        "migrations",
+        "seeding"
       ],
-      "task": "Learning migration and auto generatng models+migrations",
-      "submit": "Adding the provided pdf file to github and writing the nodes in your own workds"
+      "task": "Module 4, Database. Migrations and seeding with sequelize-cli: why sync() is not enough for a real project, how a migration records each change to the schema, and how model:generate creates a model and its migration together. Read the provided PDF, add it to your GitHub, and write the notes in your own words. Practise generating a model and running db:migrate.",
+      "submit": "Add the provided PDF to GitHub and write the notes in your own words"
+    },
+    {
+      "day": "DAY 22",
+      "topic": "Database Design: Models & ER Diagram",
+      "module": "Module 4",
+      "tags": [
+        "Sequelize",
+        "models",
+        "migrations",
+        "ER diagram",
+        "database design",
+        "foreign keys"
+      ],
+      "task": "Module 4, Database. We generated all nine Resume Forge tables with sequelize-cli (User, Template, Document, Section, Item, Version, Application, Share, Export), walked through the structure each model:generate command creates, and drew the full ER diagram showing how the tables connect. Read the class-notes PDF thoroughly tonight. Then build it yourself: run all nine model:generate commands in a fresh project, open the generated files and find the empty associate() and the plain foreign-key columns, add the references plus onDelete rules and the associations, and run db:migrate so all nine tables appear in your database. Then break it on purpose: rename a migration so a child runs before its parent and read the error, undo everything with db:migrate:undo:all and rebuild, and feed a wrong value into an enum column and watch the database refuse it. Come to the next class with it working, or with the exact error you got stuck on. Tomorrow we write the real APIs on top of these tables.",
+      "submit": "Repo with all 9 models + migrations (db:migrate working) and notes in your own words"
     }
   ];
   const byId = (id) => document.getElementById(id);
@@ -780,7 +797,7 @@
              'aria-label="' + esc(d.day + ', ' + d.topic + word) + '">' + n + '</button>';
     }).join('');
     const done = Object.keys(state).length;
-    railStatus.innerHTML = done ? '<b>' + done + '</b> of 19 added' : '0 of 19 added';
+    railStatus.innerHTML = done ? '<b>' + done + '</b> of 22 added' : '0 of 22 added';
   }
 
   railEl.addEventListener('click', (e) => {
