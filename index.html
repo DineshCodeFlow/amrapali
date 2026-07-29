@@ -404,16 +404,16 @@
     * { transition: none !important; }
   }
 
-  /* ---- sticky submit bar ---- */
+  /* ---- submit bar: sticky as an enhancement, always present in flow ---- */
   .submit-bar {
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
     z-index: 50;
-    background: rgba(16,21,28,0.92);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--bg);
     border-top: 1px solid var(--edge);
-    padding: 12px 20px;
+    padding: 14px 20px;
+    margin-top: 24px;
     box-shadow: 0 -8px 24px rgba(0,0,0,0.35);
   }
   .submit-bar-inner {
@@ -423,22 +423,20 @@
     align-items: center;
     gap: 14px;
   }
-  .submit-bar .btn { width: auto; flex: 0 0 auto; min-width: 200px; padding: 13px 22px; }
+  .submit-bar .btn { width: auto; flex: 0 0 auto; min-width: 200px; padding: 14px 22px; }
   .submit-bar .status { margin-top: 0; flex: 1; display: none; }
   .submit-bar .status.show { display: block; }
   @media (max-width: 560px) {
     .submit-bar-inner { flex-direction: column; align-items: stretch; gap: 9px; }
     .submit-bar .btn { width: 100%; min-width: 0; }
   }
-  /* keep the last content clear of the fixed bar */
-  body { padding-bottom: 120px; }
 
 </style>
 </head>
 <body>
 <div class="wrap">
   <p class="eyebrow">Amrapali University &middot; Full-Stack &amp; QA</p>
-  <h1>Daily submissions <span class="slash">/</span> 22</h1>
+  <h1>Daily submissions <span class="slash">/</span> 45</h1>
   <p class="meta">Instructor: <b>Dinesh Rawat</b>. Add every day you have finished, paste the links, send it once. Each day lands as its own row, so nothing you submit can wipe out anyone else's work.</p>
 
   <div class="rail locked" id="rail" role="group" aria-label="Day 1 to Day 22"></div>
@@ -773,21 +771,6 @@
       ],
       "task": "Module 4, Database. We generated all nine Resume Forge tables with sequelize-cli (User, Template, Document, Section, Item, Version, Application, Share, Export), walked through the structure each model:generate command creates, and drew the full ER diagram showing how the tables connect. Read the class-notes PDF thoroughly tonight. Then build it yourself: run all nine model:generate commands in a fresh project, open the generated files and find the empty associate() and the plain foreign-key columns, add the references plus onDelete rules and the associations, and run db:migrate so all nine tables appear in your database. Then break it on purpose: rename a migration so a child runs before its parent and read the error, undo everything with db:migrate:undo:all and rebuild, and feed a wrong value into an enum column and watch the database refuse it. Come to the next class with it working, or with the exact error you got stuck on. Tomorrow we write the real APIs on top of these tables.",
       "submit": "Repo with all 9 models + migrations (db:migrate working) and notes in your own words"
-    },
-    {
-      "day": "DAY 23",
-      "topic": "Backend APIs, Password Security, and Promises",
-      "module": "Module 4",
-      "tags": [
-        "Sequelize",
-        "models",
-        "migrations",
-        "ER diagram",
-        "database design",
-        "foreign keys"
-      ],
-      "task": "we worked on real backend topics through our API. We built the register endpoint and covered how passwords are stored safely with one way hashing. Then we moved to Promises, why they exist and how they work, callback hell and how it makes code messy, and the two ways out of it: Promise chains and async await.",
-      "submit": "Repo with all 9 models + migrations (db:migrate working) and notes in your own words"
     }
   ];
   const byId = (id) => document.getElementById(id);
@@ -1071,17 +1054,24 @@
         return;
       }
 
-      // Map each day number to the page's own full label, so the sheet's topic
-      // text never has to match. Fixes entries blanking on refresh.
+      // Match on the DAY NUMBER extracted from whatever the server sends -
+      // dayKey ("DAY 17"), a full taskName ("DAY 17 - Topic"), or anything with
+      // "DAY n" in it. This works no matter which script version is deployed and
+      // no matter what the sheet's topic text says. Fixes days showing empty.
       const DAY_BY_NUM = {};
-      DAYS.forEach(d => { DAY_BY_NUM[d.day] = d.day + ' - ' + d.topic; });
+      DAYS.forEach(d => { DAY_BY_NUM[d.day.replace(/\D/g, '')] = d.day + ' - ' + d.topic; });
+
+      const numFrom = (s) => {
+        const m = String(s == null ? '' : s).match(/DAY\s*(\d+)/i);
+        return m ? m[1] : '';
+      };
 
       // Keep anything the student already typed this session; fill the rest from the sheet.
       const mine = new Set(entries.map(e => e.task));
       for (const t of found) {
-        // Accept the new dayKey ("DAY 17") or an old full label, for safety.
-        const label = t.dayKey ? DAY_BY_NUM[t.dayKey] : t.taskName;
-        if (!label || !DAY_BY_LABEL[label]) continue;
+        const n = numFrom(t.dayKey) || numFrom(t.taskName);
+        const label = DAY_BY_NUM[n];
+        if (!label || !DAY_BY_LABEL[label]) continue;   // day not in this page's list
         if (mine.has(label)) continue;
         entries.push({
           id: nextId++,
